@@ -17,8 +17,8 @@ from openai import OpenAI
 
 # ===== НАСТРОЙКИ =====
 
-TELEGRAM_TOKEN = os.environ[“TELEGRAM_BOT_TOKEN”]
-OPENAI_API_KEY = os.environ[“OPENAI_API_KEY”]
+TELEGRAM_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 MODEL = "gpt-4o-mini"
 
 client = OpenAI(api_key=OPENAI_API_KEY)
