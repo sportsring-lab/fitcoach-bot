@@ -332,7 +332,7 @@ await update.message.reply_text(
 async def weight_history_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 user_id = update.effective_user.id
 user = get_user(user_id)
-log = user.get(“weight_log”, [])
+log = user.get("weight_log", [])
 msg = update.message or (update.callback_query.message if update.callback_query else None)
 
 ```
