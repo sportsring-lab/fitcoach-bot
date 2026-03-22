@@ -489,7 +489,7 @@ except Exception as e:
 ```
 
 def main():
-logger.info(“🚀 ФитКоуч PRO запускается…”)
+logger.info("🚀 ФитКоуч PRO запускается…")
 app = Application.builder().token(TELEGRAM_TOKEN).build()
 
 ```
