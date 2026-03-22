@@ -69,7 +69,7 @@ logger = logging.getLogger(__name__)
 USERS = {}
 
 def get_user(user_id: int) -> dict:
-uid = str(user_id)
+uid = str (user_id)
 if uid not in USERS:
 USERS[uid] = {
 "history": [],
