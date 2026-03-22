@@ -119,7 +119,7 @@ user_id = update.effective_user.id
 try:
 weight = float(weight_str.replace(",", "."))
 except ValueError:
-await update.message.reply_text(“⚠️ Укажи вес числом, например: `/ves 80.5`”, parse_mode=“Markdown”)
+await update.message.reply_text("⚠️ Укажи вес числом, например: `/ves 80.5`", parse_mode="Markdown")
 return
 
 ```
