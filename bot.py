@@ -410,13 +410,13 @@ elif query.data == "cmd_weight_history":
 ```
 
 async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
-await context.bot.send_chat_action(chat_id=update.effective_chat.id, action=“typing”)
+await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
 try:
 tg_file = await context.bot.get_file(update.message.voice.file_id)
 buf = io.BytesIO()
 await tg_file.download_to_memory(buf)
 buf.seek(0)
-buf.name = “voice.ogg”
+buf.name = "voice.ogg"
 
 ```
     transcription = client.audio.transcriptions.create(
