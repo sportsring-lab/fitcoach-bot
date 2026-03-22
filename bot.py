@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-“””
+"""
 ФитКоуч PRO - Telegram бот на OpenAI
-“””
+"""
 
 import logging
 import json
@@ -19,11 +19,11 @@ from openai import OpenAI
 
 TELEGRAM_TOKEN = os.environ[“TELEGRAM_BOT_TOKEN”]
 OPENAI_API_KEY = os.environ[“OPENAI_API_KEY”]
-MODEL = “gpt-4o-mini”
+MODEL = "gpt-4o-mini"
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-SYSTEM_PROMPT = “”“Ты — ФитКоуч PRO, профессиональный AI-эксперт по похудению, питанию и физической активности.
+SYSTEM_PROMPT = """Ты — ФитКоуч PRO, профессиональный AI-эксперт по похудению, питанию и физической активности.
 
 ═══ РАСХОД КАЛОРИЙ С УЧЁТОМ РАБОТЫ ═══
 Всегда используй формулу TDEE = БМ × Коэффициент:
@@ -57,10 +57,10 @@ SYSTEM_PROMPT = “”“Ты — ФитКоуч PRO, профессиональ
 Отвечай по-русски. Конкретные цифры, без воды. Используй эмодзи.”””
 
 logging.basicConfig(
-format=’%(asctime)s - %(name)s - %(levelname)s - %(message)s’,
+format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 level=logging.INFO
 )
-logger = logging.getLogger(**name**)
+logger = logging.getLogger(__name__)
 
 # ===== ХРАНИЛИЩЕ В ПАМЯТИ =====
 
@@ -72,10 +72,10 @@ def get_user(user_id: int) -> dict:
 uid = str(user_id)
 if uid not in USERS:
 USERS[uid] = {
-“history”: [],
-“profile”: {},
-“weight_log”: [],
-“preferences”: {},
+"history": [],
+"profile": {},
+"weight_log": [],
+"preferences": {},
 }
 return USERS[uid]
 
@@ -87,7 +87,7 @@ USERS[str(user_id)] = user_data
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 user_id = update.effective_user.id
 user = get_user(user_id)
-user[“history”] = []
+user["history"] = []
 update_user(user_id, user)
 
 ```
@@ -117,7 +117,7 @@ await update.message.reply_text(
 async def process_weight(update, context, weight_str):
 user_id = update.effective_user.id
 try:
-weight = float(weight_str.replace(”,”, “.”))
+weight = float(weight_str.replace(",", "."))
 except ValueError:
 await update.message.reply_text(“⚠️ Укажи вес числом, например: `/ves 80.5`”, parse_mode=“Markdown”)
 return
@@ -168,18 +168,18 @@ await update.message.reply_text(response.choices[0].message.content)
 
 async def weight_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 if context.args:
-await process_weight(update, context, “ “.join(context.args))
+await process_weight(update, context, " ".join(context.args))
 else:
 await update.message.reply_text(
-“⚖️ Напиши вес:\n`/ves 80.5`”,
-parse_mode=“Markdown”
+"⚖️ Напиши вес:\n`/ves 80.5`",
+parse_mode="Markdown"
 )
 
 async def grocery_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 user_id = update.effective_user.id
 user = get_user(user_id)
-profile = user.get(“profile”, {})
-prefs = user.get(“preferences”, {})
+profile = user.get("profile", {})
+prefs = user.get("preferences", {})
 
 ```
 msg = update.message or (update.callback_query.message if update.callback_query else None)
@@ -529,5 +529,5 @@ logger.info("✅ Бот запущен!")
 app.run_polling(allowed_updates=Update.ALL_TYPES)
 ```
 
-if **name** == “**main**”:
+if __name__ == "__main__":
 main()
