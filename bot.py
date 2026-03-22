@@ -213,7 +213,7 @@ else:
 async def tdee_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 user_id = update.effective_user.id
 user = get_user(user_id)
-profile = user.get(“profile”, {})
+profile = user.get("profile", {})
 msg = update.message or (update.callback_query.message if update.callback_query else None)
 
 ```
