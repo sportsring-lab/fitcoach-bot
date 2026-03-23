@@ -220,7 +220,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     update_user(user_id, user)
 
     keyboard = [
-        InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support")
+       [ InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support")]
         [
             InlineKeyboardButton("⚖️ Записать вес", callback_data="cmd_weight"),
             InlineKeyboardButton("🛒 Список продуктов", callback_data="cmd_grocery"),
@@ -624,10 +624,8 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await profile_command(update, context)
     elif query.data == "cmd_weight_history":
         await weight_history_command(update, context)
-elif query.data == "cmd_support":
-    await query.message.reply_text(
-        "💬  Напиши свой вопрос — я передам его в поддержку"
-    )
+    elif query.data == "cmd_support":
+        await query.message.reply_text("💬  Напиши свой вопрос — я передам его в поддержку")
     context.user_data["support_mode"] = True
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
