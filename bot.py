@@ -219,20 +219,23 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user["history"] = []
     update_user(user_id, user)
 
-    keyboard = [
-       [ InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support")]
-        [
-            InlineKeyboardButton("⚖️ Записать вес", callback_data="cmd_weight"),
-            InlineKeyboardButton("🛒 Список продуктов", callback_data="cmd_grocery"),
-        ],
-        [
-            InlineKeyboardButton("⚡ Мой расход калорий", callback_data="cmd_tdee"),
-            InlineKeyboardButton("👤 Мой профиль", callback_data="cmd_profile"),
-        ],
-        [
-            InlineKeyboardButton("📊 История веса", callback_data="cmd_weight_history"),
-        ],
-    ]
+   keyboard = [
+    [
+        InlineKeyboardButton("⚖️  Записать вес", callback_data="cmd_weight"),
+        InlineKeyboardButton("🛒  Список продуктов", callback_data="cmd_grocery"),
+    ],
+    [
+        InlineKeyboardButton("⚡ Мой расход калорий", callback_data="cmd_tdee"),
+        InlineKeyboardButton("👤  Мой профиль", callback_data="cmd_profile"),
+    ],
+    [
+        InlineKeyboardButton("📊  История веса", callback_data="cmd_weight_history"),
+    ],
+    [
+        InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support"),
+    ],
+]
+
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
@@ -629,6 +632,21 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["support_mode"] = True
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+     if context.user_data.get("support_mode"):
+        user_id = update.effective_user.id
+        text = update.message.text
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=f"📩  Сообщение в поддержку от пользователя {user_id}:\n\n{text}"
+        )
+
+        await update.message.reply_text(
+            "✅ Сообщение отправлено в поддержку. Мы ответим тебе в ближайшее время."
+        )
+
+        context.user_data["support_mode"] = False
+        return
     user_id = update.effective_user.id
     text = update.message.text
     user = get_user(user_id)
