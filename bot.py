@@ -702,7 +702,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=ADMIN_ID,
         text=f"📩  Сообщение в поддержку от пользователя {user_id}:\n\n{text}"
-    )
+     )
 
     await update.message.reply_text(
         "✅ Сообщение отправлено в поддержку. Мы ответим тебе в ближайшее время."
