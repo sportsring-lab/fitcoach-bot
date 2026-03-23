@@ -702,17 +702,17 @@ if context.user_data.get("support_mode"):
     user_id = update.effective_user.id
     text = update.message.text
 
-    await context.bot.send_message(
-        chat_id=ADMIN_ID,
-        text=f"📩  Сообщение от пользователя {user_id}:\n\n{text}"
+   await context.bot.send_message(
+    chat_id=ADMIN_ID,
+    text=f"📩  Сообщение в поддержку от пользователя {user_id}:\n\n{text}"
     )
 
-    await update.message.reply_text(
-        "✅ Сообщение отправлено! Мы ответим тебе в ближайшее время."
-    )
+  await update.message.reply_text(
+     "✅ Сообщение отправлено в поддержку. Мы ответим тебе в ближайшее время."
+   )
 
-    context.user_data["support_mode"] = False
-    return
+      context.user_data["support_mode"] = False
+     return
 async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Распознавание голосовых сообщений через OpenAI"""
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
