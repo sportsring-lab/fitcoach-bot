@@ -632,10 +632,13 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["support_mode"] = True
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-     if context.user_data.get("support_mode"):
-        user_id = update.effective_user.id
-        text = update.message.text
+    """Обработка текстовых сообщений"""
+    user_id = update.effective_user.id
+    text = update.message.text
+    user = get_user(user_id)
 
+    # ===== ПОДДЕРЖКА =====
+    if context.user_data.get("support_mode"):
         await context.bot.send_message(
             chat_id=ADMIN_ID,
             text=f"📩  Сообщение в поддержку от пользователя {user_id}:\n\n{text}"
@@ -647,9 +650,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["support_mode"] = False
         return
-    user_id = update.effective_user.id
-    text = update.message.text
-    user = get_user(user_id)
 
     # Проверяем — это запись веса? (просто число)
     try:
@@ -660,10 +660,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except ValueError:
         pass
 
+    # Добавляем контекст профиля в запрос
     profile = user.get("profile", {})
     prefs = user.get("preferences", {})
-
     context_str = ""
+
     if profile:
         context_str = (
             f"\n[Профиль пользователя: вес={profile.get('weight','?')}кг, "
@@ -676,10 +677,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     history = user.get("history", [])
     history.append({"role": "user", "content": context_str + text})
+
     if len(history) > 20:
         history = history[-20:]
 
-    await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
+    await context.bot.send_chat_action(
+        chat_id=update.effective_chat.id,
+        action="typing"
+    )
 
     try:
         reply = ask_openai(messages=history, max_tokens=1024)
@@ -692,8 +697,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     except Exception as e:
         logger.error(f"Error in handle_message: {e}")
-        await update.message.reply_text("⚠️ Ошибка при обращении к AI. Попробуй снова.")
-
+        await update.message.reply_text("⚠️  Ошибка при обращении к AI. Попробуй снова.")
 if context.user_data.get("support_mode"):
     user_id = update.effective_user.id
     text = update.message.text
