@@ -219,32 +219,32 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user["history"] = []
     update_user(user_id, user)
 
-   keyboard = [
-    [
-        InlineKeyboardButton("⚖️  Записать вес", callback_data="cmd_weight"),
-        InlineKeyboardButton("🛒  Список продуктов", callback_data="cmd_grocery"),
-    ],
-    [
-        InlineKeyboardButton("⚡ Мой расход калорий", callback_data="cmd_tdee"),
-        InlineKeyboardButton("👤  Мой профиль", callback_data="cmd_profile"),
-    ],
-    [
-        InlineKeyboardButton("📊  История веса", callback_data="cmd_weight_history"),
-    ],
-    [
-        InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support"),
-    ],
-]
-
+    keyboard = [
+        [
+            InlineKeyboardButton("⚖️  Записать вес", callback_data="cmd_weight"),
+            InlineKeyboardButton("🛒  Список продуктов", callback_data="cmd_grocery"),
+        ],
+        [
+            InlineKeyboardButton("⚡ Мой расход калорий", callback_data="cmd_tdee"),
+            InlineKeyboardButton("👤  Мой профиль", callback_data="cmd_profile"),
+        ],
+        [
+            InlineKeyboardButton("📊  История веса", callback_data="cmd_weight_history"),
+        ],
+        [
+            InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support"),
+        ],
+    ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
-        "🏋️ *ФитКоуч PRO* — твой AI-эксперт по питанию!\n\n"
+        "🏋️  *ФитКоуч PRO* — твой AI-эксперт по питанию!\n\n"
         "Функции:\n"
-        "⚖️ Еженедельный контроль веса с аналитикой\n"
-        "🛒 Список продуктов под твои предпочтения\n"
+        "⚖️  Еженедельный контроль веса с аналитикой\n"
+        "🛒  Список продуктов под твои предпочтения\n"
         "⚡ Расчёт TDEE с учётом вида работы\n"
-        "🎤 Распознавание голосовых сообщений\n\n"
+        "🎤  Распознавание голосовых сообщений\n"
+        "💬  Поддержка и обратная связь\n\n"
         "Пиши текстом, отправляй голосовые или выбери действие!\n"
         "Справка: /help",
         parse_mode="Markdown",
