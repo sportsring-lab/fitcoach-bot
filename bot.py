@@ -2,7 +2,7 @@
 """
 ФитКоуч PRO - Telegram бот (OpenAI version)
 """
-
+ADMIN_ID = 1307723730
 import logging
 import json
 import os
@@ -208,7 +208,11 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ===== КОМАНДЫ =====
-
+async def support_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "💬  Напиши свой вопрос или отзыв — я передам его в поддержку 👇"
+    )
+    context.user_data["support_mode"] = True
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user = get_user(user_id)
@@ -216,6 +220,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     update_user(user_id, user)
 
     keyboard = [
+        InlineKeyboardButton("💬  Поддержка", callback_data="cmd_support")
         [
             InlineKeyboardButton("⚖️ Записать вес", callback_data="cmd_weight"),
             InlineKeyboardButton("🛒 Список продуктов", callback_data="cmd_grocery"),
@@ -619,7 +624,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await profile_command(update, context)
     elif query.data == "cmd_weight_history":
         await weight_history_command(update, context)
-
+elif query.data == "cmd_support":
+    await query.message.reply_text(
+        "💬  Напиши свой вопрос — я передам его в поддержку"
+    )
+    context.user_data["support_mode"] = True
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -669,7 +678,21 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Error in handle_message: {e}")
         await update.message.reply_text("⚠️ Ошибка при обращении к AI. Попробуй снова.")
 
+if context.user_data.get("support_mode"):
+    user_id = update.effective_user.id
+    text = update.message.text
 
+    await context.bot.send_message(
+        chat_id=ADMIN_ID,
+        text=f"📩  Сообщение от пользователя {user_id}:\n\n{text}"
+    )
+
+    await update.message.reply_text(
+        "✅ Сообщение отправлено! Мы ответим тебе в ближайшее время."
+    )
+
+    context.user_data["support_mode"] = False
+    return
 async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Распознавание голосовых сообщений через OpenAI"""
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
