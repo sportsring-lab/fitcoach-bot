@@ -698,7 +698,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Error in handle_message: {e}")
         await update.message.reply_text("⚠️  Ошибка при обращении к AI. Попробуй снова.")
-if context.user_data.get("support_mode"):
+    if context.user_data.get("support_mode"):
     await context.bot.send_message(
         chat_id=ADMIN_ID,
         text=f"📩  Сообщение в поддержку от пользователя {user_id}:\n\n{text}"
